@@ -7,8 +7,8 @@ from enum import Enum
 
 
 class Holiday(Enum):
-    def __new__(cls, english, chinese, days):
-        obj = object.__new__(cls)
+    def __new__(self, english, chinese, days):
+        obj = object.__new__(self)
         obj._value_ = english
 
         obj.chinese = chinese

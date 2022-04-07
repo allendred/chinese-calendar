@@ -15,7 +15,7 @@ class TypeTests(unittest.TestCase):
         self.assertTrue(True)
 
     def test_datetime(self):
-        date = datetime.datetime.today()
+        date = datetime.datetime.now()
         chinese_calendar.is_holiday(date)
         self.assertTrue(True)
 

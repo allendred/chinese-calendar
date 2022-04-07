@@ -30,12 +30,16 @@ def _validate_date(*dates):
         return list(map(_validate_date, dates))
     date = _wrap_date(dates[0])
     if not isinstance(date, datetime.date):
-        raise NotImplementedError("unsupported type {}, expected type is datetime.date".format(type(date)))
+        raise NotImplementedError(
+            f"unsupported type {type(date)}, expected type is datetime.date"
+        )
+
     min_year, max_year = min(holidays.keys()).year, max(holidays.keys()).year
     if not (min_year <= date.year <= max_year):
         raise NotImplementedError(
-            "no available data for year {}, only year between [{}, {}] supported".format(date.year, min_year, max_year)
+            f"no available data for year {date.year}, only year between [{min_year}, {max_year}] supported"
         )
+
     return date
 
 
@@ -61,7 +65,9 @@ def is_workday(date):
     date = _validate_date(date)
 
     weekday = date.weekday()
-    return bool(date in workdays.keys() or (weekday <= 4 and date not in holidays.keys()))
+    return date in workdays.keys() or (
+        weekday <= 4 and date not in holidays.keys()
+    )
 
 
 def is_in_lieu(date):
@@ -200,9 +206,7 @@ def get_solar_terms(start, end):
             ]:
                 L = int((Y - 1) / 4)
             day = int(Y * D + C) - L
-            # 计算偏移量
-            delta = SOLAR_TERMS_DELTA.get((year, solar_term))
-            if delta:
+            if delta := SOLAR_TERMS_DELTA.get((year, solar_term)):
                 day += delta
             result.append((datetime.date(year, month, day), solar_term.value[1]))
         if month == 12:
